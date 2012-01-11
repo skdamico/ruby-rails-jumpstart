@@ -1,12 +1,12 @@
-require 'open4'
+require 'open3'
 
 # default to playing with a limit of 10
 limit = (ARGV.shift || "10").to_i
 
 # open a child process for the game using the Open4 library
 status =
-  Open4::popen4("ruby guess.rb #{limit}") do |pid, child_stdin, child_stdout, child_stderr|
-    puts ">>> pid        : #{ pid }"                # report the child pid for informational purposes
+  Open3.popen3("ruby guess.rb #{limit}") do |child_stdin, child_stdout, child_stderr, wait_thr|
+    puts ">>> pid        : #{ wait_thr.pid }"       # report the child pid for informational purposes
   
     finished = false                                # we're just getting started!
     i = 1                                           # let's start with a simple guess
@@ -28,7 +28,6 @@ status =
 
       i += 1
     end
+    puts ">>> exitstatus : #{ wait_thr.value }"
   end
 
-puts ">>> status     : #{ status.inspect }"
-puts ">>> exitstatus : #{ status.exitstatus }"
