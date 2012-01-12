@@ -3,7 +3,7 @@ require 'open3'
 # default to playing with a limit of 10
 limit = (ARGV.shift || "10").to_i
 
-# open a child process for the game using the Open4 library
+# open a child process for the game using the Open3 library
 status =
   Open3.popen3("ruby guess.rb #{limit}") do |child_stdin, child_stdout, child_stderr, wait_thr|
     puts ">>> pid        : #{ wait_thr.pid }"       # report the child pid for informational purposes
