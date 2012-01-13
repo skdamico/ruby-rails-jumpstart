@@ -4,8 +4,8 @@ require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/respond_to'
 require 'padrino-helpers'
-require "rack/csrf"
-require "rack/methodoverride"
+require 'rack/csrf'
+require 'rack/methodoverride'
 require 'supermodel'
 require 'haml'
 require 'json'
