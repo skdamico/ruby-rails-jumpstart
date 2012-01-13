@@ -31,6 +31,7 @@ Next Steps:
 
 Advanced:
 
+* For Twitter, format tweet HTML using the JS library from https://github.com/twitter/twitter-text-js
 * Add a 'nuke' interface that deletes all data in the app
 * Add a User model (with name, email, and password) and a 'create new user' and 'list users' interface in the app
 
