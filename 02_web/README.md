@@ -49,8 +49,27 @@ Diving Deeper
 * https://github.com/maccman/supermodel/blob/master/lib/supermodel/association.rb
 * http://yehudakatz.com/2010/01/10/activemodel-make-any-ruby-object-feel-like-activerecord/
 
+# JavaScript
+
+* Eloquent JavaScript (ebook) : http://eloquentjavascript.net/
+* JavaScript - The Good Parts (ebook) : http://www.amazon.com/exec/obidos/ASIN/0596517742/
+* JavaScript - The Good Parts (video) : http://benfry.com/writing/archives/603
+* Mozilla JavaScript References : https://developer.mozilla.org/en/JavaScript (especially https://developer.mozilla.org/en/JavaScript/Guide )
+* Writing Testable JavaScript : http://www.adequatelygood.com/2010/7/Writing-Testable-JavaScript
+
+# JQuery
+
+* JQuery for Absolute Beginners : http://nettuts.com/articles/web-roundups/jquery-for-absolute-beginners-video-series/
+* How JQuery Works Tutorial : http://docs.jquery.com/Tutorials:How_jQuery_Works
+* JQuery Tutorials for Designers : http://webdesignerwall.com/tutorials/jquery-tutorials-for-designers
+* Getting Started with JQuery: http://docs.jquery.com/Tutorials:Getting_Started_with_jQuery
+
 # AJAX
 
+* AJAX Sinatra Example : https://github.com/rziehl/sinatra-ajax-example/
+* Minimal AJAX/HAML Sinatra Example : https://gist.github.com/205948
+* AJAX for Beginners : http://www.webmonkey.com/2010/02/ajax_for_beginners/
+* 30-second AJAX Tutorial : http://blog.coderlab.us/rasmus-30-second-ajax-tutorial/
 * http://remysharp.com/2007/10/08/what-is-jsonp/
 * http://net.tutsplus.com/tutorials/javascript-ajax/5-ways-to-make-ajax-calls-with-jquery/
 * http://webhole.net/2009/11/28/how-to-read-json-with-javascript/
@@ -59,5 +78,15 @@ Diving Deeper
 # Backbone.js
 
 * http://documentcloud.github.com/backbone/
+* http://backbonetutorials.com/
+* http://ryandotsmith.heroku.com/2010/10/a-backbone-js-demo-app-sinatra-backend.html
+* http://arturadib.com/hello-backbonejs/
+* http://thomasdavis.github.com/tutorial/backbone-introduction.html
+
+# Pusher
+
+* http://pusher.com/docs
+* http://net.tutsplus.com/tutorials/javascript-ajax/getting-real-time-with-pusher/
+
 
 # More to come soon!
