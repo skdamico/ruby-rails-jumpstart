@@ -24,3 +24,9 @@ Next Steps:
 Advanced:
 
 * Add a 'clear' button that will clear the chat window in *all* connected clients
+
+More Advanced:
+
+* Add a 'multiple rooms' capability to the app - there should be multiple scrollable div's that have independent message inputs
+* The multiple rooms should use the same pusher channel, using a "room" attribute that dispatches to the correct div
+
