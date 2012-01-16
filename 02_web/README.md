@@ -1,6 +1,18 @@
 
 # Building Proficiency in Web Programming using Sinatra
 
+# Gems you'll need for this section (gem install thegem):
+
+* rack
+* rails
+* sinatra
+* sinatra-respond_to
+* padrino
+* json
+* supermodel
+* roxml
+* haml
+
 # Using Chrome Developer Tools
 
 * Step 1: (quick) Watch http://www.youtube.com/watch?v=nOEw9iiopwI
