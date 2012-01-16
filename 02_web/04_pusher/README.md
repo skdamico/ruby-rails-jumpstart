@@ -19,7 +19,7 @@ Next Steps:
 * Implement playing a sound (bell, whistle, etc) using javascript when
   another user writes a message to @USERNAME when USERNAME is your handle
 * Implement rewriting image links (end in .gif, .png, .jpg case-insensitive)
-  as thumbnail <img> tags within the message
+  as thumbnail-size 'img' html tags within the message
 
 Advanced:
 
