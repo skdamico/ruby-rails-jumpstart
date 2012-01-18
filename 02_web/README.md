@@ -12,6 +12,7 @@
 * supermodel
 * roxml
 * haml
+* pusher
 
 # Using Chrome Developer Tools
 
