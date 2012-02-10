@@ -1,6 +1,5 @@
 require 'open-uri'
 require 'json'
-require 'pp'
 
 
 BASE_URL = "http://api.duckduckgo.com/?format=json&pretty=1&q="     # remote API url
