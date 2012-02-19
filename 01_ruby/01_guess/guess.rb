@@ -6,7 +6,6 @@
 # For a harder game, increase the limit
 #
 
-
 #
 # we use a 'say' method instead of just calling 'puts' so that we
 # can flush stdout as well
@@ -34,7 +33,7 @@ def ask(limit)
 
     say "GUESS(#{limit})"
     response = gets
-    
+
     if response == "exit\n" || response == "quit\n"
       say "FAIL:exiting"
       exit
@@ -50,13 +49,16 @@ end
 def play_game(limit)
   chosen = rand(limit) + 1
   found  = false
+  lying = false   # lie to the user sometimes
 
   until found
     guess = ask(limit)
-  
-    if guess < chosen
+    lying = rand(10) < 2  # lie?
+
+    # implemented occasional lying
+    if (!lying and guess < chosen) or (lying and guess > chosen)
       say "WRONG:too low"
-    elsif guess > chosen
+    elsif (!lying and guess > chosen) or (lying and guess < chosen)
       say "WRONG:too high"
     else
       found = true
