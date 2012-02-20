@@ -6,6 +6,7 @@ require 'sinatra/base'
 require 'json'
 require 'roxml'
 require 'yaml'
+require 'lingua/stemmer'  # ruby-stemmer, a stemming lib
 
 
 class ExampleServer < Sinatra::Base
@@ -37,6 +38,57 @@ class ExampleServer < Sinatra::Base
   end
 
   #
+  # piglatin generator (for the most part)
+  # returns a string of piglatin given a string of english.
+  # multiple words are separated by a '+' sign
+  #
+  def piglatin(data)
+    if data
+      # + means space
+      words = data.split("+")
+      piglatin_words = []
+
+      words.each do |word|
+        # vowel?
+        if word[0].match(/[a,e,i,o,u]/)
+          word = word + "way"
+        # 'qu' at front?
+        elsif word[0,2] == "qu"
+          word = word[2..-1] + "quay"
+        # consonant?
+        elsif word[0].match(/[^a,e,i,o,u,0-9]/)
+          word = word[1..-1] + word[0] + "ay"
+        end
+
+        piglatin_words.push(word)
+      end
+
+      piglatin_words.join(" ")
+    else
+      "Error: need input"
+    end
+  end
+
+  #
+  # stemming algorithm returns list of tokens from the
+  # snowball stemming lib a la ruby-stemmer
+  #
+  def stem(data)
+    if data
+      words = data.split(/[+,_]|%20/)  # split on '+', '_', or '%20'
+      tokens = []
+
+      words.each do |word|
+        tokens.push(Lingua.stemmer(word, :language => "en"))
+      end
+
+      tokens.join(",")
+    else
+      "Error: need input"
+    end
+  end
+
+  #
   # a basic time service, a la:
   # http://localhost:4567/time.txt (or .xml or .json or .yaml)
   #
@@ -45,63 +97,67 @@ class ExampleServer < Sinatra::Base
   end
 
   #
-  # outputs a message from the url as plain text,
-  # a la : http://localhost:4567/echo/foo
+  # outputs a message from the url,
+  # a la : http://localhost:4567/echo.format/foo
   #
-  get '/echo/:message' do
-    content_type 'text/plain', :charset => 'utf-8'
-    params[:message]
+  get '/echo.?:format?/:message' do
+    reformat({ :echo => params[:message] })
   end
 
   #
-  # outputs a message from the url parameter as plain text,
-  # a la : http://localhost:4567/echo?message=foo
+  # outputs a message from the url,
+  # a la : http://localhost:4567/echo.format?message=foo
   #
-  get '/echo' do
-    content_type 'text/plain', :charset => 'utf-8'
-    params[:message]
+  get '/echo.?:format?' do
+    reformat({ :echo => params[:message] })
   end
 
-  # FIXME #1: implement reverse service that reverses the message
-  get '/reverse/:message' do
-    content_type 'text/plain', :charset => 'utf-8'
-    params[:message]
+  #
+  # outputs the reverse of the message,
+  # a la : http://localhost:4567/reverse.format/foo
+  #
+  get '/reverse.?:format?/:message' do
+    reformat({ :message => params[:message], :reverse => params[:message].reverse })
   end
 
-  # FIXME #1: implement reverse service that reverses the message
-  get '/reverse' do
-    content_type 'text/plain', :charset => 'utf-8'
-    params[:message]
+  #
+  # outputs the reverse of the message,
+  # a la : http://localhost:4567/reverse.format?message=foo
+  #
+  get '/reverse.?:format?' do
+    reformat({ :message => params[:message], :reverse => params[:message].reverse })
   end
 
-  # FIXME #2: implement pig latin service that translates the message
-  # using the pig latin algorithm
-  get '/piglatin/:message' do
-    content_type 'text/plain', :charset => 'utf-8'
-    params[:message]
+  #
+  # outputs a pig latin string from given english,
+  # a la : http://localhost:4567/piglatin.format/foo
+  #
+  get '/piglatin.?:format?/:message' do
+    reformat({ :message => params[:message], :piglatin => piglatin(params[:message]) })
   end
 
-  # FIXME #2: implement pig latin service that translates the message
-  # using the pig latin algorithm
-  get '/piglatin' do
-    content_type 'text/plain', :charset => 'utf-8'
-    params[:message]
+  #
+  # outputs a pig latin string from given english,
+  # a la : http://localhost:4567/piglatin.format?message=foo
+  #
+  get '/piglatin.?:format?' do
+    reformat({ :message => params[:message], :piglatin => piglatin(params[:message]) })
   end
 
-  # FIXME #3: implement snowball stemming service that translates the
-  # message into a comma-separated list of tokens using the snowball
-  # stemming algorithm
-  get '/snowball/:message' do
-    content_type 'text/plain', :charset => 'utf-8'
-    params[:message]
+  #
+  # outputs a comma separated list of stemmed tokens,
+  # a la : http://localhost:4567/stem.format/foo
+  #
+  get '/snowball.?:format?/:message' do
+    reformat({ :snowball => stem(params[:message]) })
   end
 
-  # FIXME #3: implement snowball stemming service that translates the
-  # message into a comma-separated list of tokens using the snowball
-  # stemming algorithm
-  get '/piglatin' do
-    content_type 'text/plain', :charset => 'utf-8'
-    params[:message]
+  #
+  # outputs a comma separated list of stemmed tokens,
+  # a la : http://localhost:4567/stem.format?message=foo
+  #
+  get '/snowball.?:format?' do
+    reformat({ :snowball => stem(params[:message]) })
   end
 
   run! if app_file == $0
