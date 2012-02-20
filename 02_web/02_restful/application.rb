@@ -12,9 +12,18 @@ require 'json'
 #
 class Idea < SuperModel::Base
   include SuperModel::RandomID
+  belongs_to :inventor
+end
+
+class Inventor < SuperModel::Base
+  include SuperModel::RandomID
+  attributes :name
+  validates_uniqueness_of :name
 end
 
 class RestfulServer < Sinatra::Base
+  ANONYMOUS = Inventor.create!(:name => "anonymous")
+
   # helper method that returns json
   def json_out(data)
     content_type 'application/json', :charset => 'utf-8'
@@ -32,6 +41,11 @@ class RestfulServer < Sinatra::Base
     json_out(Idea.all)
   end
 
+  # obtain a list of all ideas
+  def list_inventors
+    json_out(Inventor.all)
+  end
+
   # display the list of ideas
   get '/' do
     list_ideas
@@ -42,10 +56,50 @@ class RestfulServer < Sinatra::Base
     list_ideas
   end
 
+  # display the list of inventors
+  get '/inventors' do
+    list_inventors
+  end
+
+  # delete an inventor
+  delete '/inventors/:id' do
+    unless Inventor.exists?(params[:id])
+      not_found
+      return
+    end
+
+    Inventor.find(params[:id]).destroy
+    status 204
+    "inventor #{params[:id]} deleted\n"
+  end
+
   # create a new idea
   post '/ideas' do
-    idea = Idea.create!(JSON.parse(request.body.read))
-    json_out(idea)
+    req = JSON.parse(request.body.read)
+
+    if req["inventor"]
+      # were we given an inventor?
+      inventor = nil
+
+      # check if the inventor exists by name or id
+      if req["inventor"]["id"] and Inventor.exists?(req["inventor"]["id"])
+        inventor = Inventor.find(req["inventor"]["id"])
+      elsif req["inventor"]["name"] and Inventor.exists?(req["inventor"]["name"])
+        inventor = Inventor.find_by_name(req["inventor"]["name"])
+      else
+        # else create an inventor
+        inventor = Inventor.new(req["inventor"])
+        inventor.save
+      end
+
+      req["inventor"] = inventor
+    else
+      # an inventor was not given, use the anonymous one instead
+      req["inventor"] = ANONYMOUS
+    end
+
+    # return the idea
+    json_out(Idea.create!(req))
   end
 
   # get an idea by id
@@ -80,6 +134,23 @@ class RestfulServer < Sinatra::Base
     Idea.find(params[:id]).destroy
     status 204
     "idea #{params[:id]} deleted\n"
+  end
+
+
+  # delete all data if password is correct
+  post '/nuke' do
+    req = JSON.parse(request.body.read)
+    pass = req["pass"]
+
+    unless pass and pass == "ilikenukes"
+      status 404
+      body "password parameter is incorrect or nil\n"
+    end
+
+    Idea.destroy_all
+    Inventor.destroy_all
+
+    "all data has been destroyed!"
   end
 
   run! if app_file == $0
